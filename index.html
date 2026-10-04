@@ -3,96 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#0b1329">
 <link rel="manifest" href="manifest.json">
-<title>Ativamente</title>
+<title>Ativamente - Jogos Educativos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --primary: #00e676;
+    --primary-hover: #00c853;
+    --bg-dark: #0b1329;
+    --bg-card: rgba(23, 32, 54, 0.8);
+    --bg-input: #172036;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --radius: 14px;
+  }
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
   body {
     margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
-    background: #0f172a;
-    color: #e2e8f0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
     padding-bottom: env(safe-area-inset-bottom);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
+
   header {
-    padding: 1.2rem 1rem .6rem;
+    padding: 1rem 1.2rem;
     position: sticky; top: 0;
-    background: #0f172a;
+    background: rgba(11, 19, 41, 0.95);
+    backdrop-filter: blur(10px);
     z-index: 5;
+    border-bottom: 1px solid var(--border-color);
   }
-  h1 { margin: 0 0 .6rem; font-size: 1.4rem; }
-  h1 span { color: #38bdf8; }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+
+  .brand-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
   #busca {
-    width: 100%; padding: .75rem 1rem;
-    border-radius: 12px; border: 1px solid #1e293b;
-    background: #1e293b; color: #e2e8f0; font-size: 1rem;
+    width: 100%; 
+    padding: .85rem 1.2rem;
+    border-radius: var(--radius); 
+    border: 1px solid var(--border-color);
+    background: var(--bg-input); 
+    color: var(--text-main); 
+    font-size: 0.95rem;
+    font-family: inherit;
     outline: none;
+    transition: border-color .2s, box-shadow .2s;
   }
-  #busca:focus { border-color: #38bdf8; }
+
+  #busca:focus { 
+    border-color: var(--primary); 
+    box-shadow: 0 0 0 3px rgba(0, 230, 118, 0.15);
+  }
+
+  .hero-mini {
+    text-align: center;
+    padding: 1.5rem 1rem 0.5rem;
+  }
+
+  .hero-mini h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0 0 0.4rem;
+  }
+
+  .hero-mini h2 span { color: var(--primary); }
+  .hero-mini p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+
   #lista {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: .8rem;
-    padding: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 1.2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
   }
+
   .card {
-    background: #1e293b;
-    border-radius: 16px;
-    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 1.2rem;
     cursor: pointer;
-    transition: transform .15s, background .15s;
-    border: 1px solid #334155;
-    display: flex; flex-direction: column; gap: .4rem;
+    transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    border: 1px solid var(--border-color);
+    display: flex; 
+    flex-direction: column; 
+    gap: .5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   }
-  .card:active { transform: scale(.96); background: #273449; }
+
+  .card:hover {
+    border-color: rgba(0, 230, 118, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .card:active { transform: scale(.97); background: #1c2742; }
   .card .emoji { font-size: 2.2rem; }
-  .card .nome { font-weight: 600; font-size: .95rem; }
-  .card .desc { font-size: .78rem; color: #94a3b8; line-height: 1.3; }
-  .vazio { grid-column: 1/-1; text-align: center; color: #64748b; padding: 3rem 1rem; }
+  .card .nome { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+  .card .desc { font-size: .8rem; color: var(--text-muted); line-height: 1.35; }
+  .vazio { grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem 1rem; }
 
   #player {
     position: fixed; inset: 0;
-    background: #0f172a;
+    background: var(--bg-dark);
     display: none; flex-direction: column;
     z-index: 100;
   }
+  
   #player.aberto { display: flex; }
+  
   #player header {
-    display: flex; align-items: center; gap: .8rem;
+    display: flex; align-items: center; gap: 1rem;
     padding: .8rem 1rem;
-    background: #1e293b;
-    border-bottom: 1px solid #334155;
+    background: #172036;
+    border-bottom: 1px solid var(--border-color);
   }
+
   #voltar {
-    background: #334155; border: 0; color: #e2e8f0;
-    width: 40px; height: 40px; border-radius: 10px;
-    font-size: 1.2rem; cursor: pointer;
+    background: rgba(255, 255, 255, 0.1); 
+    border: 0; 
+    color: var(--text-main);
+    width: 40px; height: 40px; 
+    border-radius: 10px;
+    font-size: 1.2rem; 
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
   }
-  #voltar:active { background: #475569; }
-  #tituloJogo { font-weight: 600; }
+
+  #voltar:active { background: rgba(255, 255, 255, 0.2); }
+  #tituloJogo { font-weight: 700; font-size: 1.05rem; }
   #frame { flex: 1; width: 100%; border: 0; background: #fff; }
+
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>🎓 Ati<span>vamente</span></h1>
-  <input id="busca" type="search" placeholder="Buscar jogo...">
+  <div class="nav-brand">
+    <!-- Logotipo principal -->
+    <img src="logo.png" alt="Ativamente - Jogos Educativos" class="brand-logo">
+  </div>
+  <input id="busca" type="search" placeholder="Buscar jogo educativo...">
 </header>
 
-<div id="lista"></div>
+<main>
+  <div class="hero-mini">
+    <h2>Desperte seu <span>Potencial</span></h2>
+    <p>Escolha um jogo abaixo para começar a treinar a mente!</p>
+  </div>
+
+  <div id="lista"></div>
+</main>
+
+<footer>
+  © 2026 Ativamente - Jogos Educativos
+</footer>
 
 <div id="player">
   <header>
-    <button id="voltar">←</button>
+    <button id="voltar" aria-label="Voltar">←</button>
     <span id="tituloJogo"></span>
   </header>
   <iframe id="frame" allowfullscreen></iframe>
 </div>
 
 <script>
-// Caminho base — funciona tanto local quanto no GitHub Pages
 const BASE = window.location.pathname.replace(/\/[^\/]*$/, '/');
 
 const JOGOS = [
@@ -193,7 +296,6 @@ busca.addEventListener('input', e => renderizar(e.target.value));
 
 renderizar();
 
-// Service Worker — funciona offline após a primeira visita
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js')
